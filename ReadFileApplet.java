@@ -1,3 +1,4 @@
+package Dijikstra;
 import java.applet.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -29,21 +30,13 @@ public class ReadFileApplet extends Applet {
         width = getSize().width;
         height = getSize().height;
         setBackground(Color.black);
-        //txtArea = new TextArea(10, 100);
-        //txtArea.setEditable(false);
-        //add(txtArea, "left");
+
     }
 
     public void paint (Graphics g){
-        Vertex v = null;
-        int x,y;
-        g.setColor(Color.white);
-        for (int i=0; i < 50; i++) {
-            v= (Vertex)vertices[i].getFirst();
-            x = v.getX();
-            y = v.getY();
-            g.fillOval(x*5,y*5,5,5);
-        }
+    	drawLine(g); // draw line
+    	drawPoint(g); //draw Coordinates Point
+
     }
 
     public void readFile(){
@@ -83,12 +76,6 @@ public class ReadFileApplet extends Applet {
                 vertices[count].add(newV);
                 count++;
             }
-            //txtArea.append("File Name : " + fileToRead + "\n");
-            //print all vertices
-            //for (int i=0; i < 50; i++) {
-            //    txtArea.append(vertices[i].getFirst().toString() + "\n");
-            //}
-            System.out.println("finished");
 
         } catch(IOException err) {
             System.out.println("Error");
@@ -96,27 +83,39 @@ public class ReadFileApplet extends Applet {
         }
     }
 
-    public void inputFile(){
-        lid=new Label("File Name: ", Label.CENTER);
-        t1=new TextField(100);
-        b1=new Button("OK");
-
-        t1.addActionListener(new EventHandler());
-        b1.addActionListener(new EventHandler());
-
-        setLayout(new FlowLayout());
-        add(lid);
-        add(t1);
-        add(b1);
-        setSize(50,100);
-        setVisible(true);
-    }
-    class EventHandler implements ActionListener{
-        public void actionPerformed(ActionEvent e){
-            //fileToRead=t1.getText();
-            if(fileToRead!=null){
-                readFile();
-            }
+   public void drawPoint(Graphics g){
+    	Vertex v = null;
+        int x,y;
+        g.setColor(Color.white);
+        for (int i=0; i < 50; i++) {
+            v= (Vertex)vertices[i].getFirst();
+            x = v.getX();
+            y = v.getY();
+            g.fillOval(x*5,y*5,5,5);
         }
     }
+   	
+   public void drawLine(Graphics g){
+	   Vertex v = null;
+	   Vertex w = null;
+	   int x,y;
+	   int a,b;
+	   g.setColor(Color.GRAY);
+	   
+	   for(int i=0; i<50; i++){
+		   v=(Vertex)vertices[i].getFirst();
+		   for(int j=1; j<49; j++){
+			   w=(Vertex)vertices[j].getFirst();
+			   x=v.getX();
+			   y=v.getY();
+			   a=w.getX();
+			   b=w.getY();
+			   
+			   if(Math.sqrt((x-a)*(x-a)+(y-b)*(y-b))<50)
+			   g.drawLine(x*5,y*5,a*5,b*5);  
+		   }   
+	   }
+   }
+    
+    
 }
